@@ -22,14 +22,16 @@ jobs:
 
     - name: Fix compileSdk and targetSdk
       run: |
-        sed -i 's/compileSdk = 35/compileSdk = 34/g' app/build.gradle.kts
-        sed -i 's/targetSdk = 35/targetSdk = 34/g' app/build.gradle.kts
+        sed -i 's/compileSdk = 35/compileSdk = 34/g' IronOreCalc/app/build.gradle.kts
+        sed -i 's/targetSdk = 35/targetSdk = 34/g' IronOreCalc/app/build.gradle.kts
 
     - name: Build APK with Gradle
-      run: gradle assembleDebug --stacktrace
+      run: |
+        cd IronOreCalc
+        gradle assembleDebug --stacktrace
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: app-debug
-        path: app/build/outputs/apk/debug/*.apk
+        path: IronOreCalc/app/build/outputs/apk/debug/*.apk
