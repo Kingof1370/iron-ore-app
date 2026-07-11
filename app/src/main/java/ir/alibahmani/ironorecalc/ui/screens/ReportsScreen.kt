@@ -58,65 +58,67 @@ fun ReportsScreen(
                 }
             }
         } else {
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp) + paddingValues,
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                item {
-                    Text(
-                        "انتخاب پروژه برای صدور گزارش",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                }
-                items(projects, key = { it.id }) { project ->
-                    ReportProjectCard(
-                        project = project,
-                        isExporting = isExporting,
-                        onExportPdf = {
-                            scope.launch {
-                                isExporting = true
-                                try {
-                                    val file = withContext(Dispatchers.IO) {
-                                        PdfGenerator.generate(context, project.name, project.result)
+            Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+                LazyColumn(
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    item {
+                        Text(
+                            "انتخاب پروژه برای صدور گزارش",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                    }
+                    items(projects, key = { it.id }) { project ->
+                        ReportProjectCard(
+                            project = project,
+                            isExporting = isExporting,
+                            onExportPdf = {
+                                scope.launch {
+                                    isExporting = true
+                                    try {
+                                        val file = withContext(Dispatchers.IO) {
+                                            PdfGenerator.generate(context, project.name, project.result)
+                                        }
+                                        val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                                        val intent = Intent(Intent.ACTION_SEND).apply {
+                                            type = "application/pdf"
+                                            putExtra(Intent.EXTRA_STREAM, uri)
+                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                        }
+                                        context.startActivity(Intent.createChooser(intent, "صدور PDF"))
+                                    } catch (e: Exception) {
+                                        snackbarHostState.showSnackbar("خطا در تولید PDF: ${e.message}")
+                                    } finally {
+                                        isExporting = false
                                     }
-                                    val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-                                    val intent = Intent(Intent.ACTION_SEND).apply {
-                                        type = "application/pdf"
-                                        putExtra(Intent.EXTRA_STREAM, uri)
-                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                }
+                            },
+                            onExportCsv = {
+                                scope.launch {
+                                    isExporting = true
+                                    try {
+                                        val file = withContext(Dispatchers.IO) {
+                                            CsvExporter.export(context, project.name, project.inputs, project.result)
+                                        }
+                                        val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                                        val intent = Intent(Intent.ACTION_SEND).apply {
+                                            type = "text/csv"
+                                            putExtra(Intent.EXTRA_STREAM, uri)
+                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                        }
+                                        context.startActivity(Intent.createChooser(intent, "صدور CSV"))
+                                    } catch (e: Exception) {
+                                        snackbarHostState.showSnackbar("خطا در صدور CSV: ${e.message}")
+                                    } finally {
+                                        isExporting = false
                                     }
-                                    context.startActivity(Intent.createChooser(intent, "صدور PDF"))
-                                } catch (e: Exception) {
-                                    snackbarHostState.showSnackbar("خطا در تولید PDF: ${e.message}")
-                                } finally {
-                                    isExporting = false
                                 }
                             }
-                        },
-                        onExportCsv = {
-                            scope.launch {
-                                isExporting = true
-                                try {
-                                    val file = withContext(Dispatchers.IO) {
-                                        CsvExporter.export(context, project.name, project.inputs, project.result)
-                                    }
-                                    val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-                                    val intent = Intent(Intent.ACTION_SEND).apply {
-                                        type = "text/csv"
-                                        putExtra(Intent.EXTRA_STREAM, uri)
-                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                    }
-                                    context.startActivity(Intent.createChooser(intent, "صدور CSV"))
-                                } catch (e: Exception) {
-                                    snackbarHostState.showSnackbar("خطا در صدور CSV: ${e.message}")
-                                } finally {
-                                    isExporting = false
-                                }
-                            }
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }

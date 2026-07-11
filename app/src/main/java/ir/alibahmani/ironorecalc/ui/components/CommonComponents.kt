@@ -198,7 +198,7 @@ fun ScoreBar(score: Double, modifier: Modifier = Modifier) {
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(fraction = (score / 100f).coerceIn(0f, 1f))
+                    .fillMaxWidth(fraction = (score / 100.0).coerceIn(0.0, 1.0).toFloat())
                     .fillMaxHeight()
                     .clip(RoundedCornerShape(4.dp))
                     .background(color)
