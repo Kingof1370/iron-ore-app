@@ -1,6 +1,6 @@
 name: Build APK
 
-  on:
+  "on":
     push:
       branches: [ main, master ]
     workflow_dispatch:
@@ -44,7 +44,5 @@ name: Build APK
             retention-days: 30
 
         - name: Show APK info
-          run: |
-            echo "Build successful!"
-            ls -lh app/build/outputs/apk/debug/
+          run: ls -lh app/build/outputs/apk/debug/
   
