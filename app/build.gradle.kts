@@ -67,7 +67,6 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.itext.pdf)
     implementation(libs.androidx.splashscreen)
     implementation(libs.androidx.datastore)
     debugImplementation(libs.androidx.ui.tooling)

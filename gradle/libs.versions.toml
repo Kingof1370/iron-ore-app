@@ -10,7 +10,6 @@ hilt = "2.52"
 hiltNavigationCompose = "1.2.0"
 room = "2.6.1"
 ksp = "2.0.21-1.0.27"
-iTextPdf = "5.5.13.3"
 coroutines = "1.8.1"
 splashscreen = "1.0.1"
 datastore = "1.1.1"
@@ -36,7 +35,6 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
-itext-pdf = { group = "com.itextpdf", name = "itextpdf", version.ref = "iTextPdf" }
 androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
