@@ -3,6 +3,7 @@ package ir.alibahmani.ironorecalc.utils
 import android.content.Context
 import com.itextpdf.text.*
 import com.itextpdf.text.pdf.*
+import com.itextpdf.text.pdf.draw.LineSeparator
 import ir.alibahmani.ironorecalc.domain.model.CalculationResult
 import java.io.File
 import java.io.FileOutputStream
@@ -98,7 +99,7 @@ object PdfGenerator {
         }
 
         // --- Footer ---
-        doc.add(LineSeparator())
+        doc.add(Chunk(LineSeparator()))
         doc.add(Paragraph(
             "\n© 1404 علی بهمنی | 09915420558 | Iron Ore Industrial Calculator v1.0",
             FontFactory.getFont(FontFactory.HELVETICA, 8f, BaseColor.GRAY)
