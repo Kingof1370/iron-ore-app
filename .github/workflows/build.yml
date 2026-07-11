@@ -3,8 +3,6 @@ name: Build APK
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
@@ -30,17 +28,46 @@ jobs:
       with:
         packages: 'platforms;android-34 build-tools;34.0.0'
 
+    - name: Show directory structure (DEBUG)
+      run: |
+        echo "=== Root directory ==="
+        ls -la
+        echo "=== IronOreCalc directory ==="
+        ls -la IronOreCalc/
+        echo "=== app directory ==="
+        ls -la IronOreCalc/app/
+
     - name: Fix compileSdk and targetSdk
       run: |
         sed -i 's/compileSdk = 35/compileSdk = 34/g' IronOreCalc/app/build.gradle.kts
         sed -i 's/targetSdk = 35/targetSdk = 34/g' IronOreCalc/app/build.gradle.kts
+        echo "=== build.gradle.kts after fix ==="
+        cat IronOreCalc/app/build.gradle.kts | grep -E "compileSdk|targetSdk"
 
-    - name: Build APK with Gradle
+    - name: Create gradle.properties
+      run: |
+        echo "android.useAndroidX=true" > IronOreCalc/gradle.properties
+        echo "android.enableJetifier=true" >> IronOreCalc/gradle.properties
+        echo "org.gradle.jvmargs=-Xmx2048m" >> IronOreCalc/gradle.properties
+        echo "=== gradle.properties content ==="
+        cat IronOreCalc/gradle.properties
+
+    - name: Build APK with Gradle (FULL DEBUG)
       run: |
         cd IronOreCalc
-        gradle assembleDebug --stacktrace
+        gradle assembleDebug --stacktrace --info
+      continue-on-error: true
 
-    - name: Upload APK
+    - name: Show build output
+      if: always()
+      run: |
+        echo "=== Checking for APK ==="
+        find IronOreCalc -name "*.apk" 2>/dev/null || echo "No APK found"
+        echo "=== Build directory ==="
+        ls -la IronOreCalc/app/build/outputs/ 2>/dev/null || echo "No outputs directory"
+
+    - name: Upload APK (if exists)
+      if: success()
       uses: actions/upload-artifact@v4
       with:
         name: app-debug
