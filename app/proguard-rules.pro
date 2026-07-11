@@ -1,0 +1,5 @@
+-keep class ir.alibahmani.ironorecalc.** { *; }
+-keep class com.itextpdf.** { *; }
+-dontwarn com.itextpdf.**
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable

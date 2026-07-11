@@ -2,73 +2,57 @@ name: Build APK
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-    - name: Install Gradle
-      run: |
-        sudo apt update
-        sudo apt install gradle -y
+      - name: Download gradle-wrapper.jar
+        run: |
+          mkdir -p gradle/wrapper
+          curl -L -o gradle/wrapper/gradle-wrapper.jar \
+            https://github.com/gradle/gradle/raw/v8.9.0/gradle/wrapper/gradle-wrapper.jar
+        working-directory: IronOreCalc
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        packages: 'platforms;android-34 build-tools;34.0.0'
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+        working-directory: IronOreCalc
 
-    - name: Show directory structure (DEBUG)
-      run: |
-        echo "=== Root directory ==="
-        ls -la
-        echo "=== IronOreCalc directory ==="
-        ls -la IronOreCalc/
-        echo "=== app directory ==="
-        ls -la IronOreCalc/app/
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('IronOreCalc/**/*.gradle*', 'IronOreCalc/**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
-    - name: Fix compileSdk and targetSdk
-      run: |
-        sed -i 's/compileSdk = 35/compileSdk = 34/g' IronOreCalc/app/build.gradle.kts
-        sed -i 's/targetSdk = 35/targetSdk = 34/g' IronOreCalc/app/build.gradle.kts
-        echo "=== build.gradle.kts after fix ==="
-        cat IronOreCalc/app/build.gradle.kts | grep -E "compileSdk|targetSdk"
+      - name: Build Debug APK
+        working-directory: IronOreCalc
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=false"
 
-    - name: Create gradle.properties
-      run: |
-        echo "android.useAndroidX=true" > IronOreCalc/gradle.properties
-        echo "android.enableJetifier=true" >> IronOreCalc/gradle.properties
-        echo "org.gradle.jvmargs=-Xmx2048m" >> IronOreCalc/gradle.properties
-        echo "=== gradle.properties content ==="
-        cat IronOreCalc/gradle.properties
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: IronOreCalc-debug-apk
+          path: IronOreCalc/app/build/outputs/apk/debug/*.apk
+          retention-days: 30
 
-    - name: Build APK with Gradle (FULL DEBUG)
-      run: |
-        cd IronOreCalc
-        gradle assembleDebug --stacktrace --info
-      continue-on-error: true
-
-    - name: Show build output
-      if: always()
-      run: |
-        echo "=== Checking for APK ==="
-        find IronOreCalc -name "*.apk" 2>/dev/null || echo "No APK found"
-        echo "=== Build directory ==="
-        ls -la IronOreCalc/app/build/outputs/ 2>/dev/null || echo "No outputs directory"
-
-    - name: Upload APK (if exists)
-      if: success()
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-debug
-        path: IronOreCalc/app/build/outputs/apk/debug/*.apk
+      - name: Show APK info
+        run: |
+          echo "✅ Build successful!"
+          ls -lh IronOreCalc/app/build/outputs/apk/debug/
