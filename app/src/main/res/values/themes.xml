@@ -9,7 +9,6 @@
     <style name="Theme.IronOreCalc.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#0D1B2A</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
-        <item name="windowSplashScreenBrandingImage">@drawable/ic_splash_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.IronOreCalc</item>
     </style>
 </resources>
