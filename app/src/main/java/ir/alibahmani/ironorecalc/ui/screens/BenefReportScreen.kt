@@ -298,10 +298,10 @@ private fun DailyReportTab(viewModel: BenefViewModel) {
         BSectionCard("وضعیت سپراتورها (ON/OFF)") {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth()) {
-                LimsToggle("LIMS 1", lims1) { lims1 = it }
-                LimsToggle("LIMS 2", lims2) { lims2 = it }
-                LimsToggle("LIMS 3", lims3) { lims3 = it }
-                LimsToggle("LIMS 4", lims4) { lims4 = it }
+                LimsToggle("LIMS 1", lims1, modifier = Modifier.weight(1f)) { lims1 = it }
+                LimsToggle("LIMS 2", lims2, modifier = Modifier.weight(1f)) { lims2 = it }
+                LimsToggle("LIMS 3", lims3, modifier = Modifier.weight(1f)) { lims3 = it }
+                LimsToggle("LIMS 4", lims4, modifier = Modifier.weight(1f)) { lims4 = it }
             }
         }
 
@@ -589,8 +589,8 @@ private fun CumulativeStatsTab(viewModel: BenefViewModel) {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 @Composable
-private fun LimsToggle(label: String, value: Boolean, onToggle: (Boolean) -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)) {
+private fun LimsToggle(label: String, value: Boolean, onToggle: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         Text(label, fontSize = 10.sp, fontWeight = FontWeight.Medium)
         Switch(checked = value, onCheckedChange = onToggle,
             thumbContent = {
