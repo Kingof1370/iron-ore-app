@@ -144,7 +144,7 @@ fun HomeScreen(
             item {
                 DashboardCard(
                     title = "توزین و میکس",
-                    description = "ثبت توزین O10A/O30A و عیار میکس شده",
+                    description = "ثبت توزین ریزدانه/درشت‌دانه و عیار میکس شده",
                     icon = Icons.Default.Scale,
                     color = Color(0xFF1565C0),
                     onClick = { navController.navigate(Screen.MixWeighing.route) },
