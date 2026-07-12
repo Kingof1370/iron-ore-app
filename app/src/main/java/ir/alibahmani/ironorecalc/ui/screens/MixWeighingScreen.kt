@@ -318,7 +318,7 @@ private fun SummaryRow(label: String, value: String, highlight: Boolean = false)
     Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically) {
-        Text(code, fontSize = 11.sp,
+        Text(label, fontSize = 11.sp,
             color = if (highlight) MaterialTheme.colorScheme.primary
             else MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f))
