@@ -140,6 +140,27 @@ fun HomeScreen(
                     modifier = Modifier.padding(end = 16.dp)
                 )
             }
+            // ── دو بخش جدید ──────────────────────────────────────────
+            item {
+                DashboardCard(
+                    title = "توزین و میکس",
+                    description = "ثبت توزین O10A/O30A و عیار میکس شده",
+                    icon = Icons.Default.Scale,
+                    color = Color(0xFF1565C0),
+                    onClick = { navController.navigate(Screen.MixWeighing.route) },
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+            item {
+                DashboardCard(
+                    title = "گزارش پرعیارسازی",
+                    description = "گزارش روزانه LIMS، بازیابی و تولید",
+                    icon = Icons.Default.Analytics,
+                    color = Color(0xFF1B5E20),
+                    onClick = { navController.navigate(Screen.BenefReport.route) },
+                    modifier = Modifier.padding(end = 16.dp)
+                )
+            }
             item {
                 DashboardCard(
                     title = "تنظیمات",

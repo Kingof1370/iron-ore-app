@@ -7,6 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ir.alibahmani.ironorecalc.data.local.dao.BenefDao
+import ir.alibahmani.ironorecalc.data.local.dao.MixDao
 import ir.alibahmani.ironorecalc.data.local.dao.ProjectDao
 import ir.alibahmani.ironorecalc.data.local.database.AppDatabase
 import ir.alibahmani.ironorecalc.data.repository.ProjectRepository
@@ -27,6 +29,14 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideProjectDao(db: AppDatabase): ProjectDao = db.projectDao()
+
+    @Provides
+    @Singleton
+    fun provideMixDao(db: AppDatabase): MixDao = db.mixDao()
+
+    @Provides
+    @Singleton
+    fun provideBenefDao(db: AppDatabase): BenefDao = db.benefDao()
 
     @Provides
     @Singleton
