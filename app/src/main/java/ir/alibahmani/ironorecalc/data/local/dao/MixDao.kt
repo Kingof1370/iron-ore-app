@@ -21,15 +21,15 @@ interface MixDao {
     @Query("DELETE FROM mix_entries WHERE id = :id")
     suspend fun deleteById(id: Long)
 
-    @Query("SELECT SUM(weightTon) FROM mix_entries WHERE productCode = 'O10A'")
+    @Query("SELECT SUM(weightTon) FROM mix_entries WHERE productCode = 'ریز دانه'")
     fun totalFineWeight(): Flow<Double?>
 
-    @Query("SELECT SUM(weightTon) FROM mix_entries WHERE productCode = 'O30A'")
+    @Query("SELECT SUM(weightTon) FROM mix_entries WHERE productCode = 'درشت دانه'")
     fun totalCoarseWeight(): Flow<Double?>
 
-    @Query("SELECT SUM(weightTon * fePercent) FROM mix_entries WHERE productCode = 'O10A'")
+    @Query("SELECT SUM(weightTon * fePercent) FROM mix_entries WHERE productCode = 'ریز دانه'")
     fun totalFineMetalContent(): Flow<Double?>
 
-    @Query("SELECT SUM(weightTon * fePercent) FROM mix_entries WHERE productCode = 'O30A'")
+    @Query("SELECT SUM(weightTon * fePercent) FROM mix_entries WHERE productCode = 'درشت دانه'")
     fun totalCoarseMetalContent(): Flow<Double?>
 }
