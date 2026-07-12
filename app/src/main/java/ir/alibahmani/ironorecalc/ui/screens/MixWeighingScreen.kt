@@ -57,7 +57,7 @@ fun MixWeighingScreen(
 @Composable
 private fun MixEntryForm(viewModel: MixViewModel) {
     var date        by remember { mutableStateOf("") }
-    var productCode by remember { mutableStateOf("O10A") }
+    var productCode by remember { mutableStateOf("ریز دانه") }
     var weight      by remember { mutableStateOf("") }
     var fe          by remember { mutableStateOf("") }
     var feo         by remember { mutableStateOf("") }
@@ -83,11 +83,11 @@ private fun MixEntryForm(viewModel: MixViewModel) {
             // نوع محصول
             Text("نوع محصول", style = MaterialTheme.typography.labelMedium)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf("O10A" to "O10A  (ریزدانه)", "O30A" to "O30A  (درشت‌دانه)").forEach { (code, label) ->
+                listOf("ریز دانه", "درشت دانه").forEach { code ->
                     FilterChip(
                         selected = productCode == code,
                         onClick = { productCode = code; saved = false },
-                        label = { Text(label, fontSize = 12.sp) },
+                        label = { Text(code, fontSize = 12.sp) },
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -318,7 +318,7 @@ private fun SummaryRow(label: String, value: String, highlight: Boolean = false)
     Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically) {
-        Text(label, fontSize = 11.sp,
+        Text(code, fontSize = 11.sp,
             color = if (highlight) MaterialTheme.colorScheme.primary
             else MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f))
