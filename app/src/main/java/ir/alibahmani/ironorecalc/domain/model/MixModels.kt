@@ -1,13 +1,13 @@
 package ir.alibahmani.ironorecalc.domain.model
 
 /**
- * یک ردیف ورود توزین روزانه (O30A یا O10A).
+ * یک ردیف ورود توزین روزانه (ریز دانه یا درشت دانه).
  * فرمول فلز محتوا:  metalContent = weightTon × fePercent
  */
 data class MixEntry(
     val id: Long = 0,
     val date: String,            // مثال: 1404.07.12
-    val productCode: String,     // "O30A" | "O10A"
+    val productCode: String,     // "ریز دانه" | "درشت دانه"
     val weightTon: Double,       // وزن (تن)
     val fePercent: Double,       // Fe%
     val feoPercent: Double = 0.0 // FeO%
