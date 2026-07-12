@@ -589,7 +589,7 @@ private fun CumulativeStatsTab(viewModel: BenefViewModel) {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 @Composable
-private fun LimsToggle(label: String, value: Boolean, onToggle: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+private fun LimsToggle(label: String, value: Boolean, modifier: Modifier = Modifier, onToggle: (Boolean) -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         Text(label, fontSize = 10.sp, fontWeight = FontWeight.Medium)
         Switch(checked = value, onCheckedChange = onToggle,
